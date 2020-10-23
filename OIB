@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+#include <cstdlib> 
+
+using namespace std;
+
+char Encryption(const char& key, const char& symbol) {
+	char encryptioned_symbol;
+	encryptioned_symbol = key^symbol;
+	return encryptioned_symbol;
+}
+
+string Finding_key(const string& encryptioned_text, const string& text) {
+	string key;
+	for (size_t i = 0; i < text.size(); ++i) {
+		key.push_back(encryptioned_text[i] ^ text[i]);
+	}
+	return key;
+}
+
+
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	string text;
+	string encryptioned_text;
+	int n = 0;
+	cout << "Чтобы определить шифртекст, введите 1" << endl;
+	cout << "Чтобы определить ключ, введите 2" << endl;
+	cin >> n;
+	switch (n) {
+	case 1:
+		cout << "Введите открытый текст" << endl;
+		cin.ignore();
+		getline(cin, text);
+		cout << "Введите ключ" << endl;
+		for (size_t i = 0; i < text.size(); ++i) {
+			char key;
+			cin >> key;
+			encryptioned_text.push_back(Encryption(key, text[i]));
+		}
+		cout << "Шифртекст: " << endl;
+		cout << encryptioned_text << endl;
+		break;
+	case 2:
+		cout << "Введите шифртекст" << endl;
+		cin.ignore();
+		getline(cin, encryptioned_text);
+		cout << "Введите возможный вариант открытого текста" << endl;
+		getline(cin, text);
+		if (text.size() != encryptioned_text.size()) {
+			cout << "Шифртекст и открытый текст должны быть одного размера" << endl;
+			break;
+		}
+		cout << "Подобранный ключ: " << endl;
+		cout << Finding_key(encryptioned_text, text) << endl;
+		break;
+	}
+	system("pause");
+	return 0;
+}
